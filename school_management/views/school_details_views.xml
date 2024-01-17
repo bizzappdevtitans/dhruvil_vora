@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<!-- school management desktop started-->
+
+<record id="action_school_desktop" model="ir.actions.act_window">
+ <field name="name">School Desktop</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">teacher.detail</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Desktop of school management
+       </p>
+   </field>
+</record>
+<!-- school management desktop ended-->
+<!-- teacher code started -->
+
+<record id="action_school_teacher" model="ir.actions.act_window">
+   <field name="name">Teacher</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">school.teacher</field>
+   <!--<field name="view_mode">tree,form</field>-->
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add new Teacher data
+       </p>
+   </field>
+</record>
+
+    <record id="Teacher_form" model="ir.ui.view">
+    <field name="name">Teacher_form</field>
+    <field name="model">school.teacher</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button  type="object" class="oe_stat_button" string="Appointments" name="smart_button"
+                    icon="fa-pencil-square-o">
+                            </button>
+            </div>
+                <group>
+                    <group>
+                        <field name="teacher_name"/>
+                        <field name="teacher_age"/>
+                        <field name="teacher_email"/>
+                        <field name="teacher_address"/>
+                        <field name="experience"/>
+                        <field name="is_married"/>
+                        <field name="gender"/>
+                        <field name="teacher_subject"/>
+                          <button name="demo_button" string="Object button" class="oe_highlight" type="object"/>
+                   <!--    <field name="teacher_subject"/>-->
+                    </group>
+             <!--    <field name="teacher_subject"/>-->
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="Teacher_tree" model="ir.ui.view">
+   <field name="name">Teacher_tree</field>
+   <field name="model">school.teacher</field>
+   <field name="arch" type="xml">
+       <tree>
+           <field name="teacher_name"/>
+           <field name="teacher_age"/>
+           <field name="teacher_address"/>
+         <!--  <field name="teacher_subject"/>-->
+       </tree>
+   </field>
+</record>
+
+
+<!-- teacher code ended -->
+
+<!-- student code started -->
+<record id="action_school_student" model="ir.actions.act_window">
+   <field name="name">Student</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">school.student</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add a new data of Student
+       </p>
+   </field>
+</record>
+
+
+    <record id="Student_form" model="ir.ui.view">
+    <field name="name">Student_form</field>
+    <field name="model">school.student</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="student_name"/>
+                        <field name="student_age"/>
+                        <field name="student_email"/>
+                        <field name="student_address"/>
+                        <field name="gender"/>
+                    </group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="Student_tree" model="ir.ui.view">
+   <field name="name">Student_tree</field>
+   <field name="model">school.student</field>
+   <field name="arch" type="xml">
+       <tree>
+           <field name="student_name"/>
+           <field name="student_age"/>
+           <field name="gender"/>
+           <field name="student_email"/>
+       </tree>
+   </field>
+</record>
+
+
+<!-- student code ended -->
+
+
+    <menuitem
+        id="school_menu"
+        name="School Management"
+        action="action_school_desktop"
+        />
+    <menuitem
+        id="school_menu_teacher"
+        name="Teacher"
+        action="action_school_teacher"
+        parent="school_menu"
+        />
+    <menuitem
+        id="school_menu_student"
+        name="Student"
+        action="action_school_student"
+        parent="school_menu"
+        />
+
+
+</data>
+
+</odoo>
+
+
