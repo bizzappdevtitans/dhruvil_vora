@@ -15,7 +15,7 @@ home page. You can track your vendors, customers and other contacts.
     "data": [
         "security/ir.model.access.csv",
         "views/school_details_views.xml",
-        # "views/school_management_views.xml",
+        # "views/course_view.xml",
     ],
     "application": True,
     "license": "LGPL-3",

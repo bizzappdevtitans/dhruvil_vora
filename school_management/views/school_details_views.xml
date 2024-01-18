@@ -15,6 +15,7 @@
    </field>
 </record>
 <!-- school management desktop ended-->
+
 <!-- teacher code started -->
 
 <record id="action_school_teacher" model="ir.actions.act_window">
@@ -29,6 +30,17 @@
    </field>
 </record>
 
+<record id="action_update_value" model="ir.actions.server">
+    <field name="name">Delete 2</field>
+    <field name="type">ir.actions.server</field>
+    <field name="model_id" ref="model_school_teacher"/>
+    <field name="binding_model_id" ref="model_school_teacher"/>
+    <field name="state">code</field>
+    <field name="code">
+         action = records.action_delete_2()
+    </field>
+</record>
+
     <record id="Teacher_form" model="ir.ui.view">
     <field name="name">Teacher_form</field>
     <field name="model">school.teacher</field>
@@ -36,9 +48,10 @@
         <form>
             <sheet>
                 <div class="oe_button_box" name="button_box">
-                    <button  type="object" class="oe_stat_button" string="Appointments" name="smart_button"
+
+                    <button  type="object" class="oe_stat_button" string="Subjects" name="smart_button"
                     icon="fa-pencil-square-o">
-                            </button>
+                      <field name="course_count" class="oe_stat_button"/> </button>
             </div>
                 <group>
                     <group>
@@ -49,11 +62,12 @@
                         <field name="experience"/>
                         <field name="is_married"/>
                         <field name="gender"/>
-                        <field name="teacher_subject"/>
-                          <button name="demo_button" string="Object button" class="oe_highlight" type="object"/>
-                   <!--    <field name="teacher_subject"/>-->
+                        <field name="teacher_record_updated"/>
+
+                          <button name="demo_button" string="Submit button" class="oe_highlight" type="object"/>
+                        <!-- action button to student model  <button name="%(school_management.action_school_student)d" string="Action to student data" type="action"
+                            class="oe_highlight"/>-->
                     </group>
-             <!--    <field name="teacher_subject"/>-->
                 </group>
             </sheet>
         </form>
@@ -72,8 +86,6 @@
        </tree>
    </field>
 </record>
-
-
 <!-- teacher code ended -->
 
 <!-- student code started -->
@@ -127,7 +139,54 @@
 
 <!-- student code ended -->
 
+<!-- course code started-->
+<record id="action_school_course" model="ir.actions.act_window">
+   <field name="name">Course</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">school.course</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add a new data of Course
+       </p>
+   </field>
+</record>
 
+
+    <record id="action_school_course_form" model="ir.ui.view">
+    <field name="name">School.course.form</field>
+    <field name="model">school.course</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="course_name"/>
+                        <field name="course_upload_date"/>
+                        <field name="first_name"/>
+                          <field name="teacher_id"/>
+                        <field name="description"/>
+                    </group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="action_school_course_tree" model="ir.ui.view">
+   <field name="name">School.course.form</field>
+   <field name="model">school.course</field>
+   <field name="arch" type="xml">
+       <tree>
+           <field name="course_name"/>
+            <field name="course_upload_date"/>
+            <field name="first_name"/>
+            <field name="description"/>
+       </tree>
+   </field>
+</record>
+<!-- course code ended -->
     <menuitem
         id="school_menu"
         name="School Management"
@@ -139,14 +198,18 @@
         action="action_school_teacher"
         parent="school_menu"
         />
-    <menuitem
+ <menuitem
         id="school_menu_student"
         name="Student"
         action="action_school_student"
         parent="school_menu"
         />
 
-
+         <menuitem
+            id="school_menu_course"
+            name="Course"
+             parent="school_menu"
+             action="action_school_course" />
 </data>
 
 </odoo>
