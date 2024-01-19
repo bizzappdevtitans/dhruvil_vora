@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<!-- student code started -->
+<record id="action_school_student" model="ir.actions.act_window">
+   <field name="name">Student</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">school.student</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add a new data of Student
+       </p>
+   </field>
+</record>
+  <!-- Search for the Student values  -->
+  <record id="view_search_book" model="ir.ui.view">
+        <field name="name">Student Filter</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+        <search>
+            <field name="student_name"/>
+            <filter name="student_name" string="student_name" domain="[('student_name','=','')]"/>
+        </search>
+        </field>
+</record>
+
+    <record id="Student_form" model="ir.ui.view">
+    <field name="name">Student_form</field>
+    <field name="model">school.student</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="student_name"/>
+                        <field name="student_age"/>
+                        <field name="student_email"/>
+                        <field name="student_address"/>
+                        <field name="gender"/>
+                    </group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="Student_tree" model="ir.ui.view">
+   <field name="name">Student_tree</field>
+   <field name="model">school.student</field>
+   <field name="arch" type="xml">
+       <tree>
+           <field name="student_name"/>
+           <field name="student_age"/>
+           <field name="gender"/>
+           <field name="student_email"/>
+       </tree>
+   </field>
+</record>
+
+
+<!-- student code ended -->
+
+</data>
+
+</odoo>
+
+

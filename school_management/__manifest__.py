@@ -14,8 +14,11 @@ home page. You can track your vendors, customers and other contacts.
     "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",
-        "views/school_details_views.xml",
-        # "views/course_view.xml",
+        "views/school_menu_view.xml",
+        "views/teacher_view.xml",
+        "views/student_view.xml",
+        "views/course_view.xml",
+        "views/teacher_view.xml"
     ],
     "application": True,
     "license": "LGPL-3",

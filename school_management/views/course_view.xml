@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- course code started-->
+<record id="action_school_course" model="ir.actions.act_window">
+   <field name="name">Course</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">school.course</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add a new data of Course
+       </p>
+   </field>
+</record>
+
+
+    <record id="action_school_course_form" model="ir.ui.view">
+    <field name="name">School.course.form</field>
+    <field name="model">school.course</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="course_name"/>
+                        <field name="course_upload_date"/>
+                          <field name="teacher_id"/>
+                        <field name="description"/>
+                    </group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="action_school_course_tree" model="ir.ui.view">
+   <field name="name">School.course.form</field>
+   <field name="model">school.course</field>
+   <field name="arch" type="xml">
+       <tree>
+           <field name="course_name"/>
+            <field name="course_upload_date"/>
+            <field name="teacher_id"/>
+            <field name="description"/>
+       </tree>
+   </field>
+</record>
+</data>
+
+</odoo>
+
+

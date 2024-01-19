@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<!-- school management desktop started-->
+
+<record id="action_school_desktop" model="ir.actions.act_window">
+ <field name="name">School Desktop</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">teacher.detail</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Desktop of school management
+       </p>
+   </field>
+</record>
+<!-- school management desktop ended-->
+
+<!-- teacher code started -->
+
+<record id="action_school_teacher" model="ir.actions.act_window">
+   <field name="name">Teacher</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">school.teacher</field>
+   <!--<field name="view_mode">tree,form</field>-->
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add new Teacher data
+       </p>
+   </field>
+</record>
+
+<record id="action_update_value" model="ir.actions.server">
+    <field name="name">Delete 2</field>
+    <field name="type">ir.actions.server</field>
+    <field name="model_id" ref="model_school_teacher"/>
+    <field name="binding_model_id" ref="model_school_teacher"/>
+    <field name="state">code</field>
+    <field name="code">
+         action = records.action_delete_2()
+    </field>
+</record>
+
+    <record id="Teacher_form" model="ir.ui.view">
+    <field name="name">Teacher_form</field>
+    <field name="model">school.teacher</field>
+    <field name="arch" type="xml">
+        <form>
+             <header>
+                <!-- <field name="teacher_state" widget="statusbar"/> -->
+                <!-- <button name="" string="Create task" data-hotkey="z" type="action" states -->
+                       <field name="teacher_state" widget="statusbar" nolabel="1" options="{'clickable':1}" status_visible="draft,in_proess,done"/>
+            </header>
+            <sheet>
+
+                <div class="oe_button_box" name="subject_button_box">
+                    <button  type="object" class="oe_stat_button" string="Task" name="task_smart_button" icon="fa-tasks">
+                      <!-- <field name="task_count" class="oe_stat_button"/>  -->
+                  </button>
+                    <button  type="object" class="oe_stat_button" string="Subjects" name="subject_smart_button" icon="fa-book">
+                      <field name="course_count" class="oe_stat_button"/> </button>
+                  </div>
+                <group>
+                    <group>
+                        <field name="teacher_name"/>
+                        <field name="teacher_age"/>
+                        <field name="teacher_email"/>
+                        <field name="teacher_address"/>
+                        <!-- action button to student model  <button name="%(school_management.action_school_student)d" string="Action to student data" type="action"
+                            class="oe_highlight"/>-->
+                    </group>
+                    <group>
+                        <field name="experience"/>
+                        <field name="is_married"/>
+                        <field name="gender"/>
+                        <field name="teacher_record_updated"/>
+
+                    </group>
+                    <group>
+                        <button name="demo_button" string="Submit button" class="oe_highlight" type="object"/>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="Teacher_tree" model="ir.ui.view">
+   <field name="name">Teacher_tree</field>
+   <field name="model">school.teacher</field>
+   <field name="arch" type="xml">
+       <tree>
+           <field name="teacher_name"/>
+           <field name="teacher_age"/>
+           <field name="teacher_address"/>
+           <field name="teacher_courses" widget="many2many_tags"/>
+            <field name="teacher_state" decoration-success="teacher_state == 'class'" decoration-info="teacher_state == 'work'" decoration-warning="teacher_state == 'staffroom'" widget="badge"/>
+         <!--  <field name="teacher_subject"/>-->
+       </tree>
+   </field>
+</record>
+<!-- teacher code ended -->
+
+</data>
+
+</odoo>
+
+
