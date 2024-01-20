@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- course code started-->
+<record id="action_scrap_collection" model="ir.actions.act_window">
+   <field name="name">Scrap Collection</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">scrap.collection</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add a scrap collection
+       </p>
+   </field>
+</record>
+
+
+    <record id="action_scrap_collection_form" model="ir.ui.view">
+    <field name="name">scrap.collection.form</field>
+    <field name="model">scrap.collection</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="scrap_category"/>
+                    </group>
+                    <group>
+                        <field name="scrap_collection_date"/>
+                    </group>
+                    <group>
+                        <field name="scrap_address"/>
+                    </group>
+                    <group>
+                         <field name="scrap_price"/>
+                    </group>
+                    <group>
+                              <field name="scrap_quantity"/>
+                    </group>
+                    <group>
+                        <field name="scrap_total_price"/>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="action_scrap_collection_tree" model="ir.ui.view">
+   <field name="name">scrap.collection.tree</field>
+   <field name="model">scrap.collection</field>
+   <field name="arch" type="xml">
+       <tree>
+            <field name="scrap_category"/>
+            <field name="scrap_collection_date"/>
+            <field name="scrap_price"/>
+            <field name="scrap_quantity" sum="scrap_quantity"/>
+            <field name="scrap_total_price" sum="scrap_total_price"/>
+       </tree>
+   </field>
+</record>
+</data>
+
+</odoo>
+
+

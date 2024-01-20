@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- course code started-->
+<record id="action_scrap_category" model="ir.actions.act_window">
+   <field name="name">Scrap Category</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">scrap.category</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add a scrap category
+       </p>
+   </field>
+</record>
+
+
+    <record id="action_scrap_category_form" model="ir.ui.view">
+    <field name="name">scrap.category.form</field>
+    <field name="model">scrap.category</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="scrap_category_name"/>
+                        <field name="scrap_category_price"/>
+                        <field name="scrap_category_image"/>
+                    </group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="action_scrap_category_tree" model="ir.ui.view">
+   <field name="name">scrap.category.tree</field>
+   <field name="model">scrap.category</field>
+   <field name="arch" type="xml">
+       <tree>
+        <field name="scrap_category_name"/>
+        <field name="scrap_category_price"/>
+
+       </tree>
+   </field>
+</record>
+</data>
+
+</odoo>
+
+
