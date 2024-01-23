@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- course code started-->
+<record id="scrapapp_action_product_products" model="ir.actions.act_window">
+   <field name="name">Products</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">scrapapp_product.products</field>
+   <field name="view_mode">kanban,tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add new Products
+       </p>
+   </field>
+</record>
+
+
+<record id="scrapapp_action_product_products_kanban" model="ir.ui.view">
+            <field name="name">scrapapp_product.products.kanban</field>
+            <field name="model">scrapapp_product.products</field>
+            <field name="arch" type="xml">
+                <kanban class="o_res_partner_kanban">
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                 <field name="scrapapp_product_image" widget="image" />
+                                </div>
+                                <div><field name="scrapapp_product_name"/></div>
+                                <div><field name="scrapapp_product_price"/></div>
+
+                                    <!-- <field name="scrapapp_product_priority" widget="priority"/> -->
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+    <record id="scrapapp_action_product_products_form" model="ir.ui.view">
+    <field name="name">scrapapp_product.products.form</field>
+    <field name="model">scrapapp_product.products</field>
+    <field name="arch" type="xml">
+        <form>
+            <header>
+            </header>
+            <sheet>
+                 <div class="oe_button_box" name="subject_button_box">
+                    <button  type="object" class="oe_stat_button" string="Subjects" name="compute_product_count" icon="fa-signal">
+                      <field name="product_count" class="oe_stat_button"/> </button>
+                  </div>
+                <group>
+                    <group>
+                        <field name="scrapapp_product_name"/>
+                        <field name="scrapapp_product_price"/>
+                        <field name="scrapapp_product_image"/>
+                    </group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+
+
+
+ <record id="scrapapp_action_product_products_tree" model="ir.ui.view">
+   <field name="name">scrapapp_product.products.tree</field>
+   <field name="model">scrapapp_product.products</field>
+   <field name="arch" type="xml">
+       <tree>
+          <field name="scrapapp_product_name"/>
+          <field name="scrapapp_product_image"/>
+       </tree>
+   </field>
+</record>
+</data>
+
+</odoo>
+
+
