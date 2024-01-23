@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 class ScrapDesktop(models.Model):
     _name = "scrap.collection"
     _description = "showing the collected scrap"
-    # scrap_name = fields.Char("Scrap name")
+    scrap_seller_name = fields.Char("Scrap Seller name")
     scrap_price = fields.Float(string="Scrap Price", digits=(2, 1), required=True)
     scrap_category = fields.Many2one(
         "scrap.category", string="Scrap category", required=True

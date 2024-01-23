@@ -18,7 +18,7 @@
 
 <record id="scrap_desktop_kanban" model="ir.ui.view">
             <field name="name">scrap.desktop.kanban</field>
-            <field name="model">scrap.desktop</field>
+            <!-- <field name="model">scrap.desktop</field> -->
             <field name="arch" type="xml">
                 <kanban class="o_res_partner_kanban">
                     <field name="desktop_value_name"/>

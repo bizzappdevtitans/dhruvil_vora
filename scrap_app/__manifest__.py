@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    "name": "Scrap_app",
+    "name": "Scrap app",
     "category": "Uncategorized",
     "version": "15.0.1.0.0",
     "summary": "Management of scrap",
@@ -17,8 +17,13 @@ This module gives you a quick view of your scrap collection and management.
         "views/scrap_category_view.xml",
         "views/scrap_collection_view.xml",
         "views/scrap_selling_view.xml",
-        "views/scrap_menu.xml",
+        "views/scrap_inventory_view.xml",
+        "views/product_category_view.xml",
+        "views/product_product_view.xml",
+        "data/desktop_data.xml",
+        "views/scrapapp_menu.xml",
     ],
+    "demo": ["demo/file_name.xml"],
     "application": True,
     "license": "LGPL-3",
     # "website": "https://www.bizzappdev.com/",

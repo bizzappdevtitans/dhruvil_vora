@@ -24,21 +24,16 @@
             <sheet>
                 <group>
                     <group>
+                         <field name="scrap_seller_name"/>
                         <field name="scrap_category"/>
-                    </group>
-                    <group>
                         <field name="scrap_collection_date"/>
-                    </group>
-                    <group>
                         <field name="scrap_address"/>
                     </group>
+
                     <group>
                          <field name="scrap_price"/>
-                    </group>
-                    <group>
-                              <field name="scrap_quantity"/>
-                    </group>
-                    <group>
+                         <field name="scrap_quantity"/>
+
                         <field name="scrap_total_price"/>
                     </group>
                 </group>
