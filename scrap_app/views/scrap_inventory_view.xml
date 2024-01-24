@@ -7,7 +7,7 @@
    <field name="name">Scrap inventory</field>
    <field name="type">ir.actions.act_window</field>
    <field name="res_model">scrap.inventory</field>
-   <field name="view_mode">tree,form</field>
+   <field name="view_mode">kanban,tree,form</field>
    <field name="help" type="html">
        <p class="o_view_nocontent_smiling_face">
            Add a scrap inventory
@@ -16,50 +16,56 @@
 </record>
 
 
-    <record id="action_scrap_inventory_form" model="ir.ui.view">
+    <record id="action_scrap_inventory_form" model="ir.ui.view" >
     <field name="name">scrap.inventory.form</field>
     <field name="model">scrap.inventory</field>
     <field name="arch" type="xml">
         <form>
             <sheet>
                 <group>
-                    <group>
-                        <field name="scrap_seller_name"/>
-                    </group>
-                    <group>
-                        <field name="scrap_category"/>
-                    </group>
-                    <group>
-                        <field name="scrap_inventory_date"/>
-                    </group>
-                    <group>
-                        <field name="scrap_address"/>
-                    </group>
-                    <group>
-                         <field name="scrap_price"/>
-                    </group>
-                    <group>
-                              <field name="scrap_quantity"/>
-                    </group>
-                    <group>
-                        <!-- <field name="scrap_total_price" /> -->
-                    </group>
+                  <group>
+                         <field name="scrap_inventory_category" />
+                  </group>
+                  <group>
+                      <field name="current_scrap_quantity"/>
+                  </group>
                 </group>
             </sheet>
         </form>
     </field>
  </record>
 
+
+
+<record id="action_scrap_inventory_kanban" model="ir.ui.view">
+            <field name="name">scrap.inventory.kanban</field>
+            <field name="model">scrap.inventory</field>
+            <field name="arch" type="xml">
+                <kanban class="o_res_partner_kanban">
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <!-- <div class="o_kanban_image">
+                                 <field name="desktop_value_image" widget="image" />
+                                </div> -->
+                                     <field name="scrap_inventory_category"/>
+                                    <field name="current_scrap_quantity" />
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
  <record id="action_scrap_inventory_tree" model="ir.ui.view">
    <field name="name">scrap.inventory.tree</field>
    <field name="model">scrap.inventory</field>
    <field name="arch" type="xml">
        <tree>
-            <field name="scrap_category"/>
-            <field name="scrap_inventory_date"/>
-            <field name="scrap_price"/>
-            <field name="scrap_quantity" sum="scrap_quantity"/>
-            <field name="scrap_total_price" sum="scrap_total_price"/>
+         <field name="scrap_inventory_category"/>
+         <field name="current_scrap_quantity"/>
        </tree>
    </field>
 </record>

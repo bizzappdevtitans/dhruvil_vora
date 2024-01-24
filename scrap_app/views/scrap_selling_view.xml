@@ -1,70 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<data>
-
-<!-- course code started-->
-<record id="action_scrap_selling" model="ir.actions.act_window">
-   <field name="name">Scrap selling</field>
-   <field name="type">ir.actions.act_window</field>
-   <field name="res_model">scrap.selling</field>
-   <field name="view_mode">tree,form</field>
-   <field name="help" type="html">
-       <p class="o_view_nocontent_smiling_face">
-           Add a scrap selling
+    <data>
+        <!-- course code started-->
+        <record id="action_scrap_selling" model="ir.actions.act_window">
+            <field name="name">Scrap selling</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">scrap.selling</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">Add a scrap selling
        </p>
-   </field>
-</record>
+            </field>
+        </record>
 
 
-    <record id="action_scrap_selling_form" model="ir.ui.view">
-    <field name="name">scrap.selling.form</field>
-    <field name="model">scrap.selling</field>
-    <field name="arch" type="xml">
-        <form>
-            <sheet>
-                <group>
-                    <group>
-                        <field name="scrap_seller_name"/>
-                    </group>
-                    <group>
-                        <field name="scrap_category"/>
-                    </group>
-                    <group>
-                        <field name="scrap_selling_date"/>
-                    </group>
-                    <group>
-                        <field name="scrap_address"/>
-                    </group>
-                    <group>
-                         <field name="scrap_price"/>
-                    </group>
-                    <group>
-                              <field name="scrap_quantity"/>
-                    </group>
-                    <group>
-                        <field name="scrap_total_price" />
-                    </group>
-                </group>
-            </sheet>
-        </form>
-    </field>
- </record>
 
- <record id="action_scrap_selling_tree" model="ir.ui.view">
-   <field name="name">scrap.selling.tree</field>
-   <field name="model">scrap.selling</field>
-   <field name="arch" type="xml">
-       <tree>
-            <field name="scrap_category"/>
-            <field name="scrap_selling_date"/>
-            <field name="scrap_price"/>
-            <field name="scrap_quantity" sum="scrap_quantity"/>
-            <field name="scrap_total_price" sum="scrap_total_price"/>
-       </tree>
-   </field>
-</record>
-</data>
-
+        <record id="action_scrap_selling_form" model="ir.ui.view">
+            <field name="name">scrap.selling.form</field>
+            <field name="model">scrap.selling</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <!-- <field name="teacher_state" widget="statusbar"/>-->
+                        <!-- <button name="" string="Create task" data-hotkey="z" type="action" states -->
+                        <!-- <field name="teacher_state" nolabel="1" options="{'clickable':1}" status_visible="draft,in_proess,done" widget="statusbar"/> -->
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="inventory_button_box">
+                            <button class="oe_stat_button" icon="fa-bitbucket" name="selling_to_inventory" string="Inventory" type="object">
+                                <field class="oe_stat_button" name="selling_to_inventory_count"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="scrap_buyer_name"/>
+                            </group>
+                            <group>
+                                <field name="scrap_category"/>
+                            </group>
+                            <group>
+                                <field name="scrap_selling_date"/>
+                            </group>
+                            <group>
+                                <field name="scrap_address"/>
+                            </group>
+                            <group>
+                                <field name="scrap_price"/>
+                            </group>
+                            <group>
+                                <field name="scrap_quantity"/>
+                            </group>
+                            <group>
+                                <field name="scrap_total_price"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_scrap_selling_tree" model="ir.ui.view">
+            <field name="name">scrap.selling.tree</field>
+            <field name="model">scrap.selling</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="scrap_category"/>
+                    <field name="scrap_selling_date"/>
+                    <field name="scrap_price"/>
+                    <field name="scrap_quantity" sum="scrap_quantity"/>
+                    <field name="scrap_total_price" sum="scrap_total_price"/>
+                </tree>
+            </field>
+        </record>
+    </data>
 </odoo>
-
-

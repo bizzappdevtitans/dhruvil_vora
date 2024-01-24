@@ -13,7 +13,7 @@ class productDesktop(models.Model):
 
 _sql_constraints = [
     (
-        "scrapapp_product_category_unique",
+        "unique_scrapapp_product_category_name",
         "unique(scrapapp_product_category_name)",
         "Category name should be unique !",
     ),
