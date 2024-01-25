@@ -5,18 +5,19 @@ from odoo.exceptions import ValidationError
 class ScrapSelling(models.Model):
     _name = "scrap.selling"
     _description = "showing the selling scrap"
-    # scrap_name = fields.Char("Scrap name")
     _rec_name = "scrap_category"
-    scrap_price = fields.Float(string="Scrap Price", digits=(2, 1), required=True)
-    scrap_category = fields.Many2one("scrap.category", string="Scrap category")
+    scrap_price = fields.Float(
+        string="Price", digits=(2, 1), required=True, default=1.0
+    )
+    scrap_category = fields.Many2one("scrap.category", string="category")
     scrap_quantity = fields.Float(
-        string="Scrap Quantity",
+        string="Quantity",
         digits=(2, 1),
         default=1.0,
         required=True,
     )
     selling_to_inventory_count = fields.Float(
-        string="Inventory", readonly=True, compute="show_quantity"
+        string="Inventory", readonly=True, compute="_compute_show_quantity"
     )
     scrap_buyer_name = fields.Char(string="Buyer name ", default="Scrap app")
     scrap_total_price = fields.Float(
@@ -36,9 +37,13 @@ class ScrapSelling(models.Model):
         "scrap_category", "scrap_quantity", "scrap_price", "scrap_total_price"
     )
     def onchange_scrap_price(self):
-        # if self.scrap_category:
-        #     if self.scrap_category.scrap_category_price:
         self.scrap_total_price = self.scrap_price * self.scrap_quantity
+        self._compute_show_quantity()
+
+    @api.depends("selling_to_inventory_count")
+    def check_inventory(self):
+        if self.scrap_quantity > self.selling_to_inventory_count:
+            raise ValidationError("Seeling quanity can't be greater than inventory")
 
     @api.constrains("scrap_quantity")
     def checking_quantity(self):
@@ -49,18 +54,7 @@ class ScrapSelling(models.Model):
         if sell_date > today:
             raise ValidationError(("Please Enter appropiate dates."))
 
-    # for category_name in self.env["scrap.category"]:
-    #     if category_name.scrap_category_name is not self.scrap_category:
-    # raise ValidationError("Please choose from the category")
-
-    # this depends is working ok but shows a different error for the list view
-
-    # @api.depends("scrap_price", "scrap_quantity")
-    # def compute_total(self):
-    #     for total in self:
-    #         total.scrap_total_price = total.scrap_price * total.scrap_quantity
-
-    def show_quantity(self):
+    def _compute_show_quantity(self):
         for res in self:
             cat_name = self.env["scrap.inventory"].search(
                 [
@@ -71,41 +65,31 @@ class ScrapSelling(models.Model):
                     )
                 ]
             )
-        self.selling_to_inventory_count = cat_name.current_scrap_quantity
 
-    # def no_of_inventory_values(self):
+        self.selling_to_inventory_count = cat_name.current_scrap_quantity
 
     def selling_to_inventory(self):
         mode_of_view = ""
-        for res in self:
-            no_of_item = self.env["scrap.inventory"].search_count(
-                [
-                    (
-                        "id",
-                        ">",
-                        0,
-                    )
-                ]
-            )
-            print("no_of_item")
-            print(no_of_item)
-
-        if no_of_item == 0 or no_of_item == 1:
-            mode_of_view = "tree,form,kanban"
+        id_res = 0
+        value = self.env["scrap.inventory"].search([("id", ">", 20)])
+        no_of_item = len(value)
+        if no_of_item == 1:
+            mode_of_view = "form"
+            id_res = value[0].id
         else:
-            mode_of_view = "form,tree,kanban"
+            mode_of_view = "tree,form,kanban"
             print("mode of view ", mode_of_view)
         return {
             "name": "Scrap Inventory",
             "res_model": "scrap.inventory",
             "view_id": False,
-            "view_mode": "tree,form,kanban",
-            # "domain": [("teacher_id", "=", self.id)],
+            "view_mode": mode_of_view,
+            "res_id": id_res,
             "type": "ir.actions.act_window",
         }
 
     @api.constrains("scrap_category")
-    def add_inventory(self):
+    def sub_inventory(self):
         for res in self:
             inventory_of_scrap = self.env["scrap.inventory"]
             category = inventory_of_scrap.search_count(
@@ -133,6 +117,11 @@ class ScrapSelling(models.Model):
                         )
                     ]
                 )
-                cat_name.current_scrap_quantity = (
-                    cat_name.current_scrap_quantity - self.scrap_quantity
-                )
+                if cat_name.current_scrap_quantity < self.scrap_quantity:
+                    raise ValidationError(
+                        "Selling quantity can't be more than inventory"
+                    )
+                elif cat_name.current_scrap_quantity > self.scrap_quantity:
+                    cat_name.current_scrap_quantity = (
+                        cat_name.current_scrap_quantity - self.scrap_quantity
+                    )

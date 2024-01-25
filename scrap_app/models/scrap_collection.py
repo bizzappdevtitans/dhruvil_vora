@@ -2,17 +2,17 @@ from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 
 
-class ScrapDesktop(models.Model):
+class ScrapCollection(models.Model):
     _name = "scrap.collection"
     _description = "showing the collected scrap"
     _rec_name = "scrap_category"
-    scrap_seller_name = fields.Char("Scrap Seller name")
+    scrap_seller_name = fields.Char("Seller name")
     scrap_price = fields.Float(string="Scrap Price", digits=(2, 1), required=True)
     scrap_category = fields.Many2one(
-        "scrap.category", string="Scrap category", required=True
+        "scrap.category", string="category", required=True
     )
     scrap_quantity = fields.Float(
-        string="Scrap Quantity",
+        string="Quantity",
         digits=(2, 1),
         default=1.0,
         required=True,
@@ -22,8 +22,20 @@ class ScrapDesktop(models.Model):
         digits=(2, 1),
         required=True,
     )
+    collection_to_inventory_count = fields.Float(
+        string="Inventory", readonly=True, compute="_compute_show_quantity"
+    )
+    scrap_collection_state = fields.Selection(
+        [
+            ("collected", "Collected"),
+            ("in_process", "In Process"),
+            ("in_storage", "In Storage"),
+        ],
+        string="Status",
+        default="collected",
+    )
     scrap_collection_date = fields.Date(
-        string="collected Date", default=fields.Datetime.now
+        string="Collected Date", default=fields.Datetime.now
     )
     scrap_address = fields.Char(string="Address", required=True)
 
@@ -31,9 +43,6 @@ class ScrapDesktop(models.Model):
         "scrap_category", "scrap_quantity", "scrap_price", "scrap_total_price"
     )
     def onchange_scrap_price(self):
-        # if self.scrap_category:
-        #     if self.scrap_category.scrap_category_price:
-
         self.scrap_price = self.scrap_category.scrap_category_price
         self.scrap_total_price = (
             self.scrap_category.scrap_category_price * self.scrap_quantity
@@ -79,3 +88,40 @@ class ScrapDesktop(models.Model):
                 cat_name.current_scrap_quantity = (
                     cat_name.current_scrap_quantity + self.scrap_quantity
                 )
+
+    def _compute_show_quantity(self):
+        for res in self:
+            cat_name = self.env["scrap.inventory"].search(
+                [
+                    (
+                        "scrap_inventory_category",
+                        "=",
+                        res.scrap_category.scrap_category_name,
+                    )
+                ]
+            )
+
+        self.collection_to_inventory_count = cat_name.current_scrap_quantity
+
+    def collection_to_inventory(self):
+        mode_of_view = ""
+        id_res = 0
+        value = self.env["scrap.inventory"].search([("id", ">", 0)])
+        no_of_item = len(value)
+        if no_of_item == 1:
+            mode_of_view = "form"
+            id_res = value[0].id
+        else:
+            mode_of_view = "tree,form,kanban"
+            print("mode of view ", mode_of_view)
+        return {
+            "name": "Scrap Inventory",
+            "res_model": "scrap.inventory",
+            "view_id": False,
+            "view_mode": mode_of_view,
+            "res_id": id_res,
+            "type": "ir.actions.act_window",
+        }
+
+    def make_payment(self):
+        print("payment")

@@ -9,7 +9,7 @@
     "description": """
 This module gives you a quick view of your scrap collection and management.
 """,
-    "author": "Scrap",
+    "author": "bizzappdev.com",
     "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",

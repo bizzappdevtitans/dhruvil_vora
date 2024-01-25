@@ -2,7 +2,6 @@
 <odoo>
 <data>
 
-<!-- course code started-->
 <record id="scrapapp_action_product_category" model="ir.actions.act_window">
    <field name="name">product Category</field>
    <field name="type">ir.actions.act_window</field>
@@ -25,7 +24,6 @@
                 <group>
                     <group>
                         <field name="scrapapp_product_category_name"/>
-                        <!-- <field name="scrapapp_product_category_price"/> -->
                         <field name="scrapapp_product_category_image"/>
                     </group>
 
@@ -41,8 +39,6 @@
    <field name="arch" type="xml">
        <tree>
         <field name="scrapapp_product_category_name"/>
-        <!-- <field name="scrapapp_product_category_price"/> -->
-
        </tree>
    </field>
 </record>

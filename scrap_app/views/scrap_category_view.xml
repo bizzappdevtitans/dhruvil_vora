@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <data>
-
-<!-- course code started-->
 <record id="action_scrap_category" model="ir.actions.act_window">
    <field name="name">Scrap Category</field>
    <field name="type">ir.actions.act_window</field>

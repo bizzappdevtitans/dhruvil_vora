@@ -2,7 +2,6 @@
 <odoo>
 <data>
 
-<!-- course code started-->
 <record id="scrapapp_action_product_products" model="ir.actions.act_window">
    <field name="name">Products</field>
    <field name="type">ir.actions.act_window</field>
@@ -30,8 +29,6 @@
                                 </div>
                                 <div><field name="scrapapp_product_name"/></div>
                                 <div><field name="scrapapp_product_price"/></div>
-
-                                    <!-- <field name="scrapapp_product_priority" widget="priority"/> -->
                             </div>
                         </t>
                     </templates>

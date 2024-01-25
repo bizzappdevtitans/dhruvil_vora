@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- course code started-->
         <record id="action_scrap_selling" model="ir.actions.act_window">
             <field name="name">Scrap selling</field>
             <field name="type">ir.actions.act_window</field>
@@ -21,9 +20,6 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <!-- <field name="teacher_state" widget="statusbar"/>-->
-                        <!-- <button name="" string="Create task" data-hotkey="z" type="action" states -->
-                        <!-- <field name="teacher_state" nolabel="1" options="{'clickable':1}" status_visible="draft,in_proess,done" widget="statusbar"/> -->
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="inventory_button_box">

@@ -2,7 +2,6 @@
 <odoo>
 <data>
 
-<!-- course code started-->
 <record id="action_scrap_collection" model="ir.actions.act_window">
    <field name="name">Scrap Collection</field>
    <field name="type">ir.actions.act_window</field>
@@ -21,7 +20,16 @@
     <field name="model">scrap.collection</field>
     <field name="arch" type="xml">
         <form>
+               <header>
+                        <button name="make_payment" string="Make payment" type="object" class="oe_highlight"/>
+                        <field name="scrap_collection_state" nolabel="1" options="{'clickable':1}" status_visible="collected,in_process,in_storage" widget="statusbar"/>
+                </header>
             <sheet>
+                <div class="oe_button_box" name="inventory_button_box">
+                            <button class="oe_stat_button" icon="fa-bitbucket" name="collection_to_inventory" string="Inventory" type="object">
+                                <field class="oe_stat_button" name="collection_to_inventory_count"/>
+                            </button>
+                        </div>
                 <group>
                     <group>
                          <field name="scrap_seller_name"/>
