@@ -9,7 +9,7 @@ class ScrapInventory(models.Model):
     scrap_price = fields.Float(string="Price", digits=(2, 1))
     scrap_inventory_category = fields.Char(string="Category")
     current_scrap_quantity = fields.Float(
-        string="Quantity", digits=(2, 1), default=0
+        string="Quantity", digits=(5, 1), default=0
     )
     total_number_of_category = fields.Integer(string="total", default=0)
     scrap_total_price = fields.Float(

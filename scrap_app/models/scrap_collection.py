@@ -5,39 +5,71 @@ from odoo.exceptions import ValidationError
 class ScrapCollection(models.Model):
     _name = "scrap.collection"
     _description = "showing the collected scrap"
-    _rec_name = "scrap_category"
+    _rec_name = "id"
     scrap_seller_name = fields.Char("Seller name")
-    scrap_price = fields.Float(string="Scrap Price", digits=(2, 1), required=True)
-    scrap_category = fields.Many2one(
-        "scrap.category", string="category", required=True
-    )
+    scrap_price = fields.Float(string="Scrap Price", digits=(5, 1))
+    scrap_category = fields.Many2one("scrap.category", string="category")
+
     scrap_quantity = fields.Float(
         string="Quantity",
-        digits=(2, 1),
+        digits=(10, 1),
         default=1.0,
-        required=True,
     )
     scrap_total_price = fields.Float(
-        string="Total price",
-        digits=(2, 1),
-        required=True,
+        string="Total price", digits=(15, 1), compute="_compute_total_of_items"
     )
     collection_to_inventory_count = fields.Float(
         string="Inventory", readonly=True, compute="_compute_show_quantity"
     )
     scrap_collection_state = fields.Selection(
         [
-            ("collected", "Collected"),
             ("in_process", "In Process"),
+            ("collected", "Collected"),
             ("in_storage", "In Storage"),
+            ("cancel", "Cancelled"),
         ],
         string="Status",
-        default="collected",
+        default="in_process",
+        # readonly=True,
     )
     scrap_collection_date = fields.Date(
         string="Collected Date", default=fields.Datetime.now
     )
     scrap_address = fields.Char(string="Address", required=True)
+
+    scrap_collection_payment = fields.Selection(
+        [
+            ("not_paid", "Not Paid"),
+            ("paid", "Paid"),
+            ("cancel", "Cancelled"),
+        ],
+        string="Payment Status",
+        default="not_paid",
+        readonly=True,
+    )
+    add_scrap_lines = fields.One2many(
+        "scrap.collection_items", "scrap_collection_items", string="Scraps values"
+    )
+
+    # @api.onchange("add_scrap_lines")
+    def _compute_total_of_items(self):
+        print("self id     ", self.id)
+        total_value = self.env["scrap.collection_items"].search(
+            [
+                (
+                    "id",
+                    "=",
+                    self.id,
+                )
+            ]
+        )
+        print("total value ", total_value)
+        total = 0
+        for index in total_value:
+            print("index", index)
+            total += index.scrap_collection_price
+            print("total", total)
+        self.scrap_total_price = total
 
     @api.onchange(
         "scrap_category", "scrap_quantity", "scrap_price", "scrap_total_price"
@@ -123,5 +155,13 @@ class ScrapCollection(models.Model):
             "type": "ir.actions.act_window",
         }
 
-    def make_payment(self):
+    def make_payment_from_collection(self):
         print("payment")
+
+    def cancel_collection(self):
+        if True:
+            if self.scrap_collection_state == "in_process":
+                self.scrap_collection_payment = "cancel"
+                self.scrap_collection_payment = "cancel"
+            elif self.scrap_collection_state == "collected":
+                raise ValidationError("Record can't be deleted after collection!")

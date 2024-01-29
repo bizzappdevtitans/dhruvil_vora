@@ -7,7 +7,7 @@ class ScrapSelling(models.Model):
     _description = "showing the selling scrap"
     _rec_name = "scrap_category"
     scrap_price = fields.Float(
-        string="Price", digits=(2, 1), required=True, default=1.0
+        string="Price", digits=(5, 1), required=True, default=1.0
     )
     scrap_category = fields.Many2one("scrap.category", string="category")
     scrap_quantity = fields.Float(

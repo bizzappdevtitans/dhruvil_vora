@@ -5,7 +5,7 @@
    <field name="name">Scrap Category</field>
    <field name="type">ir.actions.act_window</field>
    <field name="res_model">scrap.category</field>
-   <field name="view_mode">tree,form</field>
+   <field name="view_mode">tree,kanban,form</field>
    <field name="help" type="html">
        <p class="o_view_nocontent_smiling_face">
            Add a scrap category
@@ -14,8 +14,40 @@
 </record>
 
 
+
+<record id="action_scrap_category_kanban" model="ir.ui.view">
+            <field name="name">scrap.category.kanban</field>
+            <field name="model">scrap.category</field>
+
+            <field name="arch" type="xml">
+            <kanban class="ScrapInventory" string="Scrap Inventory" >
+              <templates>
+                  <t t-name="kanban-box">
+                      <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                          <div class="o_kanban_content">
+                              <strong>
+                                  <div class="oe_kanban_project_list o_kanban_record_subtitle">
+                                       <field name="scrap_category_name"/>
+                                  </div>
+                              </strong>
+                               <div>
+                                  Price :
+                                  <field name="scrap_category_price"/>
+                              </div>
+
+                          </div>
+                      </div>
+                  </t>
+              </templates>
+          </kanban>
+            </field>
+        </record>
+
+
     <record id="action_scrap_category_form" model="ir.ui.view">
     <field name="name">scrap.category.form</field>
+    <field name="name">scrap.category.search(scrap_app)
+    </field>
     <field name="model">scrap.category</field>
     <field name="arch" type="xml">
         <form>

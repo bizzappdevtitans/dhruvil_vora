@@ -5,3 +5,4 @@ from . import scrap_selling
 from . import scrapapp_product_category
 from . import scrapapp_product_product
 from . import scrap_inventory
+from . import scrap_collection_items
