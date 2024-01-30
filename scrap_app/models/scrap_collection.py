@@ -1,11 +1,11 @@
-from odoo import fields, models, api
+from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
 
 class ScrapCollection(models.Model):
     _name = "scrap.collection"
     _description = "showing the collected scrap"
-    _rec_name = "id"
+    _rec_name = "scrap_collection_seq"
     scrap_seller_name = fields.Char("Seller name")
     scrap_price = fields.Float(string="Scrap Price", digits=(5, 1))
     scrap_category = fields.Many2one("scrap.category", string="category")
@@ -15,17 +15,22 @@ class ScrapCollection(models.Model):
         digits=(10, 1),
         default=1.0,
     )
-    scrap_total_price = fields.Float(
-        string="Total price", digits=(15, 1), compute="_compute_total_of_items"
-    )
+    scrap_total_price = fields.Float(string="Total price", digits=(15, 1))
     collection_to_inventory_count = fields.Float(
         string="Inventory", readonly=True, compute="_compute_show_quantity"
+    )
+    scrap_collection_seq = fields.Char(
+        string="Collection id",
+        required=True,
+        copy=False,
+        readonly=True,
+        index=True,
+        default=lambda self: _("New"),
     )
     scrap_collection_state = fields.Selection(
         [
             ("in_process", "In Process"),
             ("collected", "Collected"),
-            ("in_storage", "In Storage"),
             ("cancel", "Cancelled"),
         ],
         string="Status",
@@ -48,37 +53,39 @@ class ScrapCollection(models.Model):
         readonly=True,
     )
     add_scrap_lines = fields.One2many(
-        "scrap.collection_items", "scrap_collection_items", string="Scraps values"
+        "scrap.collection_items", "scrap_collection_id", string="Scraps values"
     )
 
-    # @api.onchange("add_scrap_lines")
-    def _compute_total_of_items(self):
-        print("self id     ", self.id)
+    @api.model
+    def create(self, vals):
+        if vals.get("scrap_collection_seq", _("New")) == _("New"):
+            vals["scrap_collection_seq"] = self.env["ir.sequence"].next_by_code(
+                "scrap.collection"
+            ) or _("New")
+            res = super(ScrapCollection, self).create(vals)
+            return res
+
+    def write(self, vals):
         total_value = self.env["scrap.collection_items"].search(
             [
                 (
-                    "id",
+                    "scrap_collection_id",
                     "=",
-                    self.id,
+                    self.scrap_collection_seq,
                 )
             ]
         )
-        print("total value ", total_value)
-        total = 0
-        for index in total_value:
-            print("index", index)
-            total += index.scrap_collection_price
-            print("total", total)
-        self.scrap_total_price = total
-
-    @api.onchange(
-        "scrap_category", "scrap_quantity", "scrap_price", "scrap_total_price"
-    )
-    def onchange_scrap_price(self):
-        self.scrap_price = self.scrap_category.scrap_category_price
-        self.scrap_total_price = (
-            self.scrap_category.scrap_category_price * self.scrap_quantity
+        print(
+            "total value jhgfdjklgfdjgfjkfjjjfgfljghjfdhgjkdfgbnjkfdngbgb", total_value
         )
+        total_price = 0
+        total_qty = 0
+        for index in total_value:
+            total_price += index.scrap_collection_total_price
+            total_qty += index.scrap_collection_quantity
+        self.scrap_total_price = total_price
+        print("jkfdhgjkfdnfdgnfd,mgnfd,mfgmgfdnfdg", self.scrap_total_price)
+        self.scrap_quantity = total_qty
 
     @api.constrains("scrap_quantity", "scrap_category")
     def checking_quantity(self):

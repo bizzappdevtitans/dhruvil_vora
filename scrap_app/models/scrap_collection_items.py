@@ -5,13 +5,11 @@ from odoo.exceptions import ValidationError
 class Scrap_Collection_items(models.Model):
     _name = "scrap.collection_items"
     _description = "showing the collected scrap"
-    _rec_name = "scrap_collection_category"
-    scrap_collection_items = fields.Many2one(
-        "scrap.collection", string="collection"
+    _rec_name = "scrap_collection_id"
+    scrap_collection_id = fields.Many2one(
+        "scrap.collection", string="collection id", ondelete="cascade"
     )
-    scrap_collection_category = fields.Many2one(
-        "scrap.category", string="category"
-    )
+    scrap_collection_category = fields.Many2one("scrap.category", string="category")
     scrap_collection_price = fields.Float(
         string="Scrap Price", digits=(5, 1), required=True
     )

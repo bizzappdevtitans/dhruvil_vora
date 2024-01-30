@@ -21,14 +21,18 @@
 
             <field name="arch" type="xml">
             <kanban class="ScrapInventory" string="Scrap Inventory" >
-              <templates>
-                  <t t-name="kanban-box">
+            <field name="scrap_category_sequence" widget="handle" invisible="1" />
+              <templates style="width:50%; height:100px;">
+                  <t t-name="kanban-box" >
                       <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                           <div class="o_kanban_content">
+                            <div style="width:auto; height:auto">
+                                 <!-- <field name="scrap_category_image" widget="image"/> -->
+                                </div>
                               <strong>
-                                  <div class="oe_kanban_project_list o_kanban_record_subtitle">
+                                  <h4>
                                        <field name="scrap_category_name"/>
-                                  </div>
+                                  </h4>
                               </strong>
                                <div>
                                   Price :
@@ -56,7 +60,7 @@
                     <group>
                         <field name="scrap_category_name"/>
                         <field name="scrap_category_price"/>
-                        <field name="scrap_category_image"/>
+                       <field name="scrap_category_image" widget="image"/>
                     </group>
 
                 </group>
