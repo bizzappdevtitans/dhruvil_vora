@@ -35,7 +35,7 @@ class ScrapCollection(models.Model):
         ],
         string="Status",
         default="in_process",
-        # readonly=True,
+        readonly=True,
     )
     scrap_collection_date = fields.Date(
         string="Collected Date", default=fields.Datetime.now
@@ -58,74 +58,57 @@ class ScrapCollection(models.Model):
 
     @api.model
     def create(self, vals):
+        if "scrap_collection_date" in vals:
+            ()
         if vals.get("scrap_collection_seq", _("New")) == _("New"):
             vals["scrap_collection_seq"] = self.env["ir.sequence"].next_by_code(
                 "scrap.collection"
             ) or _("New")
+            self.add_inventory()
             res = super(ScrapCollection, self).create(vals)
             return res
 
     def write(self, vals):
-        total_value = self.env["scrap.collection_items"].search(
-            [
-                (
-                    "scrap_collection_id",
-                    "=",
-                    self.scrap_collection_seq,
-                )
-            ]
-        )
-        print(
-            "total value jhgfdjklgfdjgfjkfjjjfgfljghjfdhgjkdfgbnjkfdngbgb", total_value
-        )
-        total_price = 0
-        total_qty = 0
-        for index in total_value:
-            total_price += index.scrap_collection_total_price
-            total_qty += index.scrap_collection_quantity
-        self.scrap_total_price = total_price
-        print("jkfdhgjkfdnfdgnfd,mgnfd,mfgmgfdnfdg", self.scrap_total_price)
-        self.scrap_quantity = total_qty
+        collect_date = fields.Date.from_string(self.scrap_collection_date)
+        today = fields.Date.from_string(fields.Datetime.now())
+        if collect_date > today:
+            raise ValidationError(("Please Enter appropiate dates."))
 
-    @api.constrains("scrap_quantity", "scrap_category")
+        self.add_inventory()
+        return super(ScrapCollection, self).write(vals)
+
+    def unlink(self, vals):
+        if "scrap_collection_state" != "cancel":
+            raise ValidationError("You can't delete the uncancelled scrap")
+        else:
+            res = super(ScrapCollection, self).unlink(vals)
+            return res
+    @api.constrains("scrap_quantity")
     def checking_quantity(self):
         if self.scrap_quantity <= 0:
             raise ValidationError("quanity should be greater than 0 ")
-        for category_name in self.env["scrap.category"]:
-            if category_name.scrap_category_name is not self.scrap_category:
-                raise ValidationError("Please choose from the category")
 
-    @api.constrains("scrap_category")
     def add_inventory(self):
-        for res in self:
-            inventory_of_scrap = self.env["scrap.inventory"]
-            category = inventory_of_scrap.search_count(
-                [
-                    (
-                        "scrap_inventory_category",
-                        "=",
-                        res.scrap_category.scrap_category_name,
-                    )
-                ]
+        print("yes written")
+        for index in self.add_scrap_lines:
+            category_id = index.id
+            category_name = index.scrap_collection_category.scrap_category_name
+            category_quantity = index.scrap_collection_quantity
+            category_num = self.env["scrap.inventory"].search_count(
+                [("scrap_inventory_category", "=", category_name)]
             )
-            vals = {
-                "scrap_inventory_category": res.scrap_category.scrap_category_name,
-                "current_scrap_quantity": self.scrap_quantity,
-            }
-            if category == 0:
-                self.env["scrap.inventory"].create(vals)
-            elif category > 0:
-                cat_name = inventory_of_scrap.search(
-                    [
-                        (
-                            "scrap_inventory_category",
-                            "=",
-                            res.scrap_category.scrap_category_name,
-                        )
-                    ]
+            if category_num == 0:
+                self.env["scrap.inventory"].create(
+                    {
+                        "scrap_inventory_category": category_name,
+                        "current_scrap_quantity": category_quantity,
+                    }
                 )
-                cat_name.current_scrap_quantity = (
-                    cat_name.current_scrap_quantity + self.scrap_quantity
+            elif category_num == 1:
+                print("elif part")
+                print("categiory id ", category_id)
+                self.env["scrap.inventory"].browse(category_id).update(
+                    {"current_scrap_quantity": 5}
                 )
 
     def _compute_show_quantity(self):
