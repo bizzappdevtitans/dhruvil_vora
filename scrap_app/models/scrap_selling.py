@@ -6,6 +6,7 @@ class ScrapSelling(models.Model):
     _name = "scrap.selling"
     _description = "showing the selling scrap"
     _rec_name = "scrap_category"
+    # _inherit = "scrap.category"
     scrap_price = fields.Float(
         string="Price", digits=(5, 1), required=True, default=1.0
     )
@@ -32,6 +33,46 @@ class ScrapSelling(models.Model):
         string="Address",
         required=True,
     )
+
+    def name_get(self):
+        result = []
+        for rec in self:
+            result.append(
+                (
+                    rec.id,
+                    "%s / %s"
+                    % (rec.scrap_buyer_name, rec.scrap_category.scrap_category_name),
+                )
+            )
+
+        return result
+
+    @api.model
+    def name_search(
+        self,
+        name,
+        args=None,
+        operator="=",
+        limit=100,
+        name_get_uid=None,
+    ):
+        print("was in this name_search ")
+        args = args or []
+
+        domain = []
+        if name:
+            domain = [
+                "|",
+                ("scrap_buyer_name", operator, name),
+                ("scrap_category", operator, name),
+            ]
+
+        return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+
+    def read(self, vals):
+        res = super(ScrapSelling, self).read(vals)
+        print(res)
+        return res
 
     @api.onchange(
         "scrap_category", "scrap_quantity", "scrap_price", "scrap_total_price"
@@ -71,7 +112,8 @@ class ScrapSelling(models.Model):
     def selling_to_inventory(self):
         mode_of_view = ""
         id_res = 0
-        value = self.env["scrap.inventory"].search([("id", ">", 20)])
+        value = self.env["scrap.inventory"].search_read([], ["id"])
+        print("value is this ", value)
         no_of_item = len(value)
         if no_of_item == 1:
             mode_of_view = "form"

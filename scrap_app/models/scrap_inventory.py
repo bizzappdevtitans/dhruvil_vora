@@ -17,4 +17,4 @@ class ScrapInventory(models.Model):
     #     digits=(2, 1),
     #     store=True,
     # )
-    scrap_inventory_date = fields.Date(string="Date", default=fields.Datetime.now)
+    #scrap_inventory_date = fields.Date(string="Date", default=fields.Datetime.now)

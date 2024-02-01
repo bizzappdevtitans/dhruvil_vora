@@ -1,5 +1,5 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 
 class ScrapCollection(models.Model):
@@ -58,13 +58,11 @@ class ScrapCollection(models.Model):
 
     @api.model
     def create(self, vals):
-        if "scrap_collection_date" in vals:
-            ()
         if vals.get("scrap_collection_seq", _("New")) == _("New"):
             vals["scrap_collection_seq"] = self.env["ir.sequence"].next_by_code(
                 "scrap.collection"
             ) or _("New")
-            self.add_inventory()
+            # self.add_inventory()
             res = super(ScrapCollection, self).create(vals)
             return res
 
@@ -74,15 +72,25 @@ class ScrapCollection(models.Model):
         if collect_date > today:
             raise ValidationError(("Please Enter appropiate dates."))
 
-        self.add_inventory()
+        # self.add_inventory()
         return super(ScrapCollection, self).write(vals)
 
-    def unlink(self, vals):
-        if "scrap_collection_state" != "cancel":
-            raise ValidationError("You can't delete the uncancelled scrap")
+    def unlink(self):
+        if self.scrap_collection_state != "cancel":
+            raise UserError(_("reocrd can be only deleted after cancelling."))
         else:
-            res = super(ScrapCollection, self).unlink(vals)
-            return res
+            return super(ScrapCollection, self).unlink()
+
+    # update and write are same
+    # def update(self, values):
+    #     """Update the records in ``self`` with ``values``."""
+    #     for record in self:
+    #         for name, value in values.items():
+    #             record[name] = value
+    #             print(record[name])
+
+
+
     @api.constrains("scrap_quantity")
     def checking_quantity(self):
         if self.scrap_quantity <= 0:
@@ -149,9 +157,8 @@ class ScrapCollection(models.Model):
         print("payment")
 
     def cancel_collection(self):
-        if True:
-            if self.scrap_collection_state == "in_process":
-                self.scrap_collection_payment = "cancel"
-                self.scrap_collection_payment = "cancel"
-            elif self.scrap_collection_state == "collected":
-                raise ValidationError("Record can't be deleted after collection!")
+        if self.scrap_collection_state == "in_process":
+            self.scrap_collection_payment = "cancel"
+            self.scrap_collection_state = "cancel"
+        elif self.scrap_collection_state == "collected":
+            raise ValidationError("Record can't be deleted after collection!")
