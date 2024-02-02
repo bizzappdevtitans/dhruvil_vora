@@ -8,7 +8,7 @@ class ScrapCollection(models.Model):
     _rec_name = "scrap_collection_seq"
     scrap_seller_name = fields.Char("Seller name")
     scrap_price = fields.Float(string="Scrap Price", digits=(5, 1))
-    scrap_category = fields.Many2one("scrap.category", string="category")
+    # scrap_category = fields.Many2one("scrap.category", string="category")
 
     scrap_quantity = fields.Float(
         string="Quantity",
@@ -62,22 +62,47 @@ class ScrapCollection(models.Model):
             vals["scrap_collection_seq"] = self.env["ir.sequence"].next_by_code(
                 "scrap.collection"
             ) or _("New")
-            # self.add_inventory()
             res = super(ScrapCollection, self).create(vals)
             return res
 
     def write(self, vals):
-        collect_date = fields.Date.from_string(self.scrap_collection_date)
-        today = fields.Date.from_string(fields.Datetime.now())
-        if collect_date > today:
-            raise ValidationError(("Please Enter appropiate dates."))
+        for index in vals["add_scrap_lines"]:
+            if index[2]:
+                print("inner value ", index[1])
+                collection_id = self.env["scrap.collection_items"].search(
+                    [("id", "=", index[1])]
+                )
+                old_name = collection_id.scrap_collection_category.scrap_category_name
+                old_quantity = collection_id.scrap_collection_quantity
+                print("old name", old_name)
+                print("old quantity", old_quantity)
+                # new_name=index[2].get("")
+                new_quantity = index[2].get("scrap_collection_quantity")
+                print("new quantity", new_quantity)
 
-        # self.add_inventory()
+                if new_quantity > old_quantity:
+                    new_quantity -= old_quantity
+                    self.env["scrap.inventory"].update_the_inventory(
+                        {
+                            "scrap_inventory_category": old_name,
+                            "current_scrap_quantity": new_quantity,
+                            "update_value": "add",
+                        }
+                    )
+                elif new_quantity < old_quantity:
+                    old_quantity-=new_quantity
+                    self.env["scrap.inventory"].update_the_inventory(
+                        {
+                            "scrap_inventory_category": old_name,
+                            "current_scrap_quantity": old_quantity,
+                            "update_value": "sub",
+                        }
+                    )
         return super(ScrapCollection, self).write(vals)
 
     def unlink(self):
         if self.scrap_collection_state != "cancel":
-            raise UserError(_("reocrd can be only deleted after cancelling."))
+            raise UserError(_("record can be only deleted after cancelling."))
         else:
             return super(ScrapCollection, self).unlink()
 
@@ -88,13 +113,6 @@ class ScrapCollection(models.Model):
     #         for name, value in values.items():
     #             record[name] = value
     #             print(record[name])
-
-
-
-    @api.constrains("scrap_quantity")
-    def checking_quantity(self):
-        if self.scrap_quantity <= 0:
-            raise ValidationError("quanity should be greater than 0 ")
 
     def add_inventory(self):
         print("yes written")
@@ -119,19 +137,19 @@ class ScrapCollection(models.Model):
                     {"current_scrap_quantity": 5}
                 )
 
-    def _compute_show_quantity(self):
-        for res in self:
-            cat_name = self.env["scrap.inventory"].search(
-                [
-                    (
-                        "scrap_inventory_category",
-                        "=",
-                        res.scrap_category.scrap_category_name,
-                    )
-                ]
-            )
+    # def _compute_show_quantity(self):
+    #     for res in self:
+    #         cat_name = self.env["scrap.inventory"].search(
+    #             [
+    #                 (
+    #                     "scrap_inventory_category",
+    #                     "=",
+    #                     res.scrap_category.scrap_category_name,
+    #                 )
+    #             ]
+    #         )
 
-        self.collection_to_inventory_count = cat_name.current_scrap_quantity
+    #     self.collection_to_inventory_count = cat_name.current_scrap_quantity
 
     def collection_to_inventory(self):
         mode_of_view = ""

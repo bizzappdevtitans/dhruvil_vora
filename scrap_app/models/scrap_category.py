@@ -11,3 +11,12 @@ class ScrapCategory(models.Model):
     scrap_category_price = fields.Float(string="Price", digits=(2, 1))
     scrap_category_image = fields.Image(string="Image")
 
+    @api.model
+    def create(self, vals):
+        add_inventory = {
+            "scrap_inventory_category": vals["scrap_category_name"],
+            "current_scrap_quantity": 0.0,
+        }
+        self.env["scrap.inventory"].create(add_inventory)
+        res = super(ScrapCategory, self).create(vals)
+        return res

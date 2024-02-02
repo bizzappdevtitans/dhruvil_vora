@@ -6,7 +6,6 @@ class ScrapSelling(models.Model):
     _name = "scrap.selling"
     _description = "showing the selling scrap"
     _rec_name = "scrap_category"
-    # _inherit = "scrap.category"
     scrap_price = fields.Float(
         string="Price", digits=(5, 1), required=True, default=1.0
     )

@@ -25,6 +25,42 @@ class Scrap_Collection_items(models.Model):
         required=True,
     )
 
+    @api.constrains("scrap_collection_quantity")
+    def checking_quantity(self):
+        value = self.scrap_collection_quantity
+        if value <= 0:
+            raise ValidationError("Do not enter value less or equal to 0")
+
+    @api.model
+    def create(self, vals):
+        print(vals)
+        if "scrap_collection_category" in vals:
+            category_name = (
+                self.env["scrap.category"]
+                .browse(vals.get("scrap_collection_category"))
+                .scrap_category_name
+            )
+            category_quantity = vals.get("scrap_collection_quantity")
+            add_inventory = {
+                "scrap_inventory_category": category_name,
+                "current_scrap_quantity": category_quantity,
+                "update_value": "add",
+            }
+            self.env["scrap.inventory"].update_the_inventory(add_inventory)
+        res = super(Scrap_Collection_items, self).create(vals)
+        return res
+
+    @api.model
+    def write(self, vals):
+        # print("vals",vals)
+        # # for index in self:
+        # #     scrap_category = index.scrap_collection_category.scrap_category_name
+        # #     scrap_quantity = index.scrap_collection_quantity
+
+        # print("self", self)
+        return super(Scrap_Collection_items, self).write(vals)
+
+
     @api.onchange(
         "scrap_collection_category",
         "scrap_collection_quantity",
