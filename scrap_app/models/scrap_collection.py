@@ -6,14 +6,11 @@ class ScrapCollection(models.Model):
     _name = "scrap.collection"
     _description = "showing the collected scrap"
     _rec_name = "scrap_collection_seq"
-    scrap_seller_name = fields.Char("Seller name")
-    scrap_price = fields.Float(string="Scrap Price", digits=(5, 1))
-    # scrap_category = fields.Many2one("scrap.category", string="category")
+    scrap_seller_name = fields.Char("Seller name", required=True)
 
-    scrap_quantity = fields.Float(
+    scrap_total_quantity = fields.Float(
         string="Quantity",
         digits=(10, 1),
-        default=1.0,
     )
     scrap_total_price = fields.Float(string="Total price", digits=(15, 1))
     collection_to_inventory_count = fields.Float(
@@ -30,7 +27,7 @@ class ScrapCollection(models.Model):
     scrap_collection_state = fields.Selection(
         [
             ("in_process", "In Process"),
-            ("collected", "Collected"),
+            ("confirm", "Confirmed"),
             ("cancel", "Cancelled"),
         ],
         string="Status",
@@ -53,7 +50,7 @@ class ScrapCollection(models.Model):
         readonly=True,
     )
     add_scrap_lines = fields.One2many(
-        "scrap.collection_items", "scrap_collection_id", string="Scraps values"
+        "scrap.items", "scrap_collection_id", string="Scraps values"
     )
 
     @api.model
@@ -66,45 +63,15 @@ class ScrapCollection(models.Model):
             return res
 
     def write(self, vals):
-        for index in vals["add_scrap_lines"]:
-            if index[2]:
-                print("inner value ", index[1])
-                collection_id = self.env["scrap.collection_items"].search(
-                    [("id", "=", index[1])]
-                )
-                old_name = collection_id.scrap_collection_category.scrap_category_name
-                old_quantity = collection_id.scrap_collection_quantity
-                print("old name", old_name)
-                print("old quantity", old_quantity)
-                # new_name=index[2].get("")
-                new_quantity = index[2].get("scrap_collection_quantity")
-                print("new quantity", new_quantity)
-
-                if new_quantity > old_quantity:
-                    new_quantity -= old_quantity
-                    self.env["scrap.inventory"].update_the_inventory(
-                        {
-                            "scrap_inventory_category": old_name,
-                            "current_scrap_quantity": new_quantity,
-                            "update_value": "add",
-                        }
-                    )
-                elif new_quantity < old_quantity:
-                    old_quantity-=new_quantity
-                    self.env["scrap.inventory"].update_the_inventory(
-                        {
-                            "scrap_inventory_category": old_name,
-                            "current_scrap_quantity": old_quantity,
-                            "update_value": "sub",
-                        }
-                    )
+        self.parameters_for_validation(vals)
         return super(ScrapCollection, self).write(vals)
 
     def unlink(self):
-        if self.scrap_collection_state != "cancel":
-            raise UserError(_("record can be only deleted after cancelling."))
-        else:
-            return super(ScrapCollection, self).unlink()
+        for record in self:
+            if record.scrap_collection_state == "confirm":
+                raise UserError(_("record can't be deleted after Confirmed!!"))
+            else:
+                return super(ScrapCollection, self).unlink()
 
     # update and write are same
     # def update(self, values):
@@ -113,16 +80,25 @@ class ScrapCollection(models.Model):
     #         for name, value in values.items():
     #             record[name] = value
     #             print(record[name])
+    def parameters_for_validation(self, vals):
+        if "scrap_seller_name" in vals:
+            print("nothiingf")
+            para = self.env["ir.config_parameter"].get_param("min_name_length", "")
+            if len(vals["scrap_seller_name"]) < int(para):
+                raise ValidationError("Enter Proper name ")
 
     def add_inventory(self):
-        print("yes written")
+        total_quantity = 0
+        total_value = 0
         for index in self.add_scrap_lines:
-            category_id = index.id
-            category_name = index.scrap_collection_category.scrap_category_name
-            category_quantity = index.scrap_collection_quantity
+            category_name = index.scrap_item_category.scrap_category_name
+            category_quantity = index.scrap_item_quantity
+            category_total = index.scrap_item_total_price
             category_num = self.env["scrap.inventory"].search_count(
                 [("scrap_inventory_category", "=", category_name)]
             )
+            total_quantity += category_quantity
+            total_value += category_total
             if category_num == 0:
                 self.env["scrap.inventory"].create(
                     {
@@ -131,11 +107,21 @@ class ScrapCollection(models.Model):
                     }
                 )
             elif category_num == 1:
-                print("elif part")
-                print("categiory id ", category_id)
-                self.env["scrap.inventory"].browse(category_id).update(
-                    {"current_scrap_quantity": 5}
+                update_value = self.env["scrap.inventory"].search(
+                    [
+                        (
+                            "scrap_inventory_category",
+                            "=",
+                            category_name,
+                        )
+                    ]
                 )
+
+                update_value.current_scrap_quantity += category_quantity
+
+        self.scrap_collection_state = "confirm"
+        self.scrap_total_quantity = category_quantity
+        self.scrap_total_price = category_total
 
     # def _compute_show_quantity(self):
     #     for res in self:
@@ -173,6 +159,7 @@ class ScrapCollection(models.Model):
 
     def make_payment_from_collection(self):
         print("payment")
+        # self.scrap_collection_payment = "paid"
 
     def cancel_collection(self):
         if self.scrap_collection_state == "in_process":
@@ -180,3 +167,7 @@ class ScrapCollection(models.Model):
             self.scrap_collection_state = "cancel"
         elif self.scrap_collection_state == "collected":
             raise ValidationError("Record can't be deleted after collection!")
+
+    def Confirm_collection(self):
+        if True:
+            self.add_inventory()

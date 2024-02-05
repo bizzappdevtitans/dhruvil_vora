@@ -4,7 +4,7 @@
         <record id="action_scrap_collection_views" model="ir.actions.act_window">
    <field name="name">Scrap Collection items</field>
    <field name="type">ir.actions.act_window</field>
-   <field name="res_model">scrap.collection_items</field>
+   <field name="res_model">scrap.items</field>
    <field name="view_mode">tree,form</field>
    <field name="help" type="html">
        <p class="o_view_nocontent_smiling_face">
@@ -14,16 +14,17 @@
 </record>
 
 
-        <record id="action_scrap_collection_items_tree" model="ir.ui.view">
-            <field name="name">scrap.collection_items.tree</field>
-            <field name="model">scrap.collection_items</field>
+        <record id="action_scrap_items_tree" model="ir.ui.view">
+            <field name="name">scrap.items.tree</field>
+            <field name="model">scrap.items</field>
             <field name="arch" type="xml">
                <tree>
                    <field name="scrap_collection_id"/>
-                   <field name="scrap_collection_category"/>
-                   <field name="scrap_collection_quantity"/>
-                   <field name="scrap_collection_price"/>
-                   <field name="scrap_collection_total_price"/>
+                   <field name="scrap_selling_id"/>
+                   <field name="scrap_item_category"/>
+                   <field name="scrap_item_quantity"/>
+                   <field name="scrap_item_price"/>
+                   <field name="scrap_item_total_price"/>
                </tree>
             </field>
         </record>

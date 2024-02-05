@@ -32,13 +32,3 @@ class ScrapInventory(models.Model):
         )
     ]
 
-    def update_the_inventory(self, vals):
-        """Update the records in ``self`` with ``values``."""
-        print("value", vals)
-        update_value = self.env["scrap.inventory"].search(
-            [("scrap_inventory_category", "=", vals.get("scrap_inventory_category"))]
-        )
-        if vals.get("update_value") == "add":
-            update_value.current_scrap_quantity += vals.get("current_scrap_quantity")
-        if vals.get("update_value") == "sub":
-            update_value.current_scrap_quantity -= vals.get("current_scrap_quantity")

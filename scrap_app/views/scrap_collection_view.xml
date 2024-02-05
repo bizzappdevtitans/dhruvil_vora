@@ -19,12 +19,12 @@
     <field name="name">scrap.collection.form</field>
     <field name="model">scrap.collection</field>
     <field name="arch" type="xml">
-        <form>
+        <form >
                <header>
                         <button name="make_payment_from_collection" string="Make payment" type="object" class="oe_highlight"/>
-                        <!-- <button name="cancel_collection" string="cancel" type="object"  confirm="Are you sure you want to cancel the record?" /> -->
-                         <button name="cancel_collection" confirm="Are you sure you want to cancel the collection record?" attrs="{'invisible': [('scrap_collection_payment', 'in', ('paid','cancel')),('scrap_collection_state', 'in', ('collected','cancel'))]}" string="Cancel" groups="base.group_user" type="object" data-hotkey="z"/>
-                        <field name="scrap_collection_state" nolabel="1" options="{'clickable':1}" status_visible="in_process,collected,cancel" widget="statusbar"/>
+                        <button name="Confirm_collection" string="Confirm" type="object"  confirm="Are you sure you want to Confirm the collection?" attrs="{'invisible': [('scrap_collection_state', 'not in', ('in_process'))]}" />
+                         <button name="cancel_collection" confirm="Are you sure you want to cancel the collection record?" attrs="{'invisible': [('scrap_collection_state', 'not in', ('in_process'))]}" string="Cancel" groups="base.group_user" type="object" data-hotkey="z"/>
+                        <field name="scrap_collection_state" nolabel="1" options="{'clickable':1}" status_visible="in_process,confirm,cancel" widget="statusbar"/>
                 </header>
             <sheet>
                 <div class="oe_button_box" name="inventory_button_box">
@@ -56,10 +56,10 @@
                             <page string="Scrap Items Lines">
                                 <field name="add_scrap_lines">
                                     <tree editable="bottom">
-                                    <field name="scrap_collection_category" />
-                                    <field name="scrap_collection_price"/>
-                                    <field name="scrap_collection_quantity" sum="scrap_collection_quantity" />
-                                    <field name="scrap_collection_total_price" sum="scrap_collection_total_price"/>
+                                    <field name="scrap_item_category" />
+                                    <field name="scrap_item_price"/>
+                                    <field name="scrap_item_quantity" sum="scrap_item_quantity" />
+                                    <field name="scrap_item_total_price" sum="scrap_item_total_price"/>
                                     </tree>
                                 </field>
                             </page>
@@ -81,9 +81,9 @@
        <tree>
             <field name="scrap_collection_seq"/>
             <field name="scrap_collection_date"/>
-            <!-- <field name="scrap_collection_payment" /> -->
              <field name="scrap_collection_payment" decoration-success="scrap_collection_payment == 'paid'" decoration-warning="scrap_collection_payment == 'not_paid'" decoration-danger="scrap_collection_payment == 'cancel'" widget="badge"/>
-            <field name="scrap_quantity" sum="scrap_quantity"/>
+             <field name="scrap_collection_state" decoration-success="scrap_collection_state == 'confirm'" decoration-warning="scrap_collection_state == 'in_process'" decoration-muted="scrap_collection_state == 'cancel'" widget="badge"/>
+            <field name="scrap_total_quantity" sum="scrap_quantity"/>
             <field name="scrap_total_price" sum="scrap_total_price"/>
        </tree>
    </field>

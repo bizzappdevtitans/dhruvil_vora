@@ -38,7 +38,7 @@
         action="action_scrap_category"
         />
           <menuitem
-        id="scrapapp_menu_scrap_collection_items"
+        id="scrapapp_menu_scrap_items"
         name="view  values"
         parent="scrapapp_menu_scrap"
         action="action_scrap_collection_views"
