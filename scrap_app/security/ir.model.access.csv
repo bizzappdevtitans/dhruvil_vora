@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+scrap_app.access_scrapapp_product_category,access_scrapapp_product_category,scrap_app.model_scrapapp_product_category,base.group_user,1,1,1,1
+scrap_app.access_scrapapp_product_products,access_scrapapp_product_products,scrap_app.model_scrapapp_product_products,base.group_user,1,1,1,1
+scrap_app.access_scrap_collection,access_scrap_collection,scrap_app.model_scrap_collection,base.group_user,1,1,1,1
+scrap_app.access_scrap_desktop,access_scrap_desktop,scrap_app.model_scrap_desktop,base.group_user,1,1,1,1
+scrap_app.access_scrap_category,access_scrap_category,scrap_app.model_scrap_category,base.group_user,1,1,1,1
+scrap_app.access_scrap_selling,access_scrap_selling,scrap_app.model_scrap_selling,base.group_user,1,1,1,1
+scrap_app.access_scrap_inventory,access_scrap_inventory,scrap_app.model_scrap_inventory,base.group_user,1,1,1,1
+scrap_app.access_scrap_collection_items,access_scrap_collection_items,scrap_app.model_scrap_collection_items,base.group_user,1,1,1,1

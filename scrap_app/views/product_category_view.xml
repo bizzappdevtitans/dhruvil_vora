@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<record id="scrapapp_action_product_category" model="ir.actions.act_window">
+   <field name="name">product Category</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">scrapapp_product.category</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add a product category
+       </p>
+   </field>
+</record>
+
+
+    <record id="scrapapp_action_product_category_form" model="ir.ui.view">
+    <field name="name">scrapapp_product.category.form</field>
+    <field name="model">scrapapp_product.category</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="scrapapp_product_category_name"/>
+                        <field name="scrapapp_product_category_image"/>
+                    </group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="scrapapp_action_product_category_tree" model="ir.ui.view">
+   <field name="name">scrapapp_product.category.tree</field>
+   <field name="model">scrapapp_product.category</field>
+   <field name="arch" type="xml">
+       <tree>
+        <field name="scrapapp_product_category_name"/>
+       </tree>
+   </field>
+</record>
+</data>
+
+</odoo>
+
+
