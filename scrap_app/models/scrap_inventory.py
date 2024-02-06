@@ -31,4 +31,3 @@ class ScrapInventory(models.Model):
             "Please choose a unique name !",
         )
     ]
-

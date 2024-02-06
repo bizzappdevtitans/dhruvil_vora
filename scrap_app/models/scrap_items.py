@@ -17,9 +17,7 @@ class Scrap_items(models.Model):
         ondelete="cascade",
     )
     scrap_item_category = fields.Many2one("scrap.category", string="category")
-    scrap_item_price = fields.Float(
-        string="Scrap Price", digits=(5, 1), required=True
-    )
+    scrap_item_price = fields.Float(string="Scrap Price", digits=(5, 1), required=True)
     scrap_item_total_price = fields.Float(
         string="Total price",
         digits=(15, 1),
@@ -56,10 +54,7 @@ class Scrap_items(models.Model):
         "scrap_item_total_price",
     )
     def onchange_scrap_price(self):
-        self.scrap_item_price = (
-            self.scrap_item_category.scrap_category_price
-        )
+        self.scrap_item_price = self.scrap_item_category.scrap_category_price
         self.scrap_item_total_price = (
-            self.scrap_item_category.scrap_category_price
-            * self.scrap_item_quantity
+            self.scrap_item_category.scrap_category_price * self.scrap_item_quantity
         )
