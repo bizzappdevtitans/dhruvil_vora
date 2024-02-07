@@ -1,65 +1,66 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 <!-- main scrap menu -->
- <menuitem
-        id="scrapapp_menu"
-        name="Scrap App"
-        action="action_scrap_desktop"
-        />
+ <menuitem id="scrapapp_menu" name="Scrap App" action="action_scrap_desktop" />
         <!-- scrap sub menu -->
-    <menuitem
-        id="scrapapp_menu_scrap"
-        name="Scrap"
-        parent="scrapapp_menu"
-        />
+    <menuitem id="scrapapp_menu_scrap" name="Scrap" parent="scrapapp_menu" />
 
         <menuitem
         id="scrapapp_menu_scrap_collection"
         name="Scrap Collection"
         parent="scrapapp_menu_scrap"
         action="action_scrap_collection"
-        />
+    />
         <menuitem
         id="scrapapp_menu_scrap_selling"
         name="Scrap Selling"
         parent="scrapapp_menu_scrap"
         action="action_scrap_selling"
-        />
+    />
           <menuitem
         id="scrapapp_menu_scrap_inventory"
         name="Scrap Inventory"
         parent="scrapapp_menu_scrap"
         action="action_scrap_inventory"
-        />
+    />
         <menuitem
         id="scrapapp_menu_scrap_category"
         name="Add category"
         parent="scrapapp_menu_scrap"
         action="action_scrap_category"
-        />
+    />
           <menuitem
-        id="scrapapp_menu_scrap_items"
+        id="scrapapp_menu_ScrapItems"
         name="view  values"
         parent="scrapapp_menu_scrap"
         action="action_scrap_collection_views"
-        />
+    />
 
         <!-- product sub menu -->
-    <menuitem
-        id="scrapapp_menu_product"
-        name="Product"
-        parent="scrapapp_menu"
-        />
+    <menuitem id="scrapapp_menu_product" name="Product" parent="scrapapp_menu" />
         <menuitem
         id="scrapapp_menu_product_category"
         name="Add Products category"
         parent="scrapapp_menu_product"
         action="scrapapp_action_product_category"
-        />
+    />
          <menuitem
         id="scrapapp_menu_product_product"
         name="Products"
         parent="scrapapp_menu_product"
         action="scrapapp_action_product_products"
-        />
+    />
+        <!-- configuration menu -->
+          <menuitem
+        id="scrapapp_menu_configuration"
+        name="Configuration"
+        parent="scrapapp_menu"
+    />
+
+        <menuitem
+        id="scrapapp_menu_configuration_settings"
+        name="Settings"
+        parent="scrapapp_menu_configuration"
+        action="action_config_settings"
+    />
 </odoo>

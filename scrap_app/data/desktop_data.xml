@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data noupdate="1">
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
         <!-- DEMO DATA -->
         <record id="demo_name1" model="scrap.desktop">
             <field name="desktop_value_name">Scrap Collection</field>
@@ -12,5 +11,4 @@
            <record id="demo_name3" model="scrap.desktop">
             <field name="desktop_value_name">Inventory</field>
         </record>
-    </data>
 </odoo>

@@ -1,8 +1,6 @@
-<odoo>
-  <data noupdate="0">
+<odoo noupdate="0">
     <record id="auth_password_minlength" model="ir.config_parameter">
       <field name="key">auth_name_minlength</field>
       <field name="value">10</field>
     </record>
-  </data>
 </odoo>

@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -22,7 +22,7 @@ class ScrapInventory(models.Model):
         company_ids = self.search([])
         value = [x.name.lower() for x in company_ids]
         if self.name and self.name.lower() in value:
-            raise ValidationError(("The combination is already Exist"))
+            raise ValidationError(_("The combination is already Exist"))
 
     _sql_constraints = [
         (

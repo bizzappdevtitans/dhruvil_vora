@@ -6,4 +6,4 @@ scrap_app.access_scrap_desktop,access_scrap_desktop,scrap_app.model_scrap_deskto
 scrap_app.access_scrap_category,access_scrap_category,scrap_app.model_scrap_category,base.group_user,1,1,1,1
 scrap_app.access_scrap_selling,access_scrap_selling,scrap_app.model_scrap_selling,base.group_user,1,1,1,1
 scrap_app.access_scrap_inventory,access_scrap_inventory,scrap_app.model_scrap_inventory,base.group_user,1,1,1,1
-scrap_app.access_scrap_items,access_scrap_items,scrap_app.model_scrap_items,base.group_user,1,1,1,1
+scrap_app.access_ScrapItems,access_ScrapItems,scrap_app.model_ScrapItems,base.group_user,1,1,1,1

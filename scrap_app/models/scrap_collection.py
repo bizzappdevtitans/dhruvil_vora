@@ -1,5 +1,7 @@
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError, UserError
+from datetime import timedelta
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class ScrapCollection(models.Model):
@@ -7,7 +9,9 @@ class ScrapCollection(models.Model):
     _description = "showing the collected scrap"
     _rec_name = "scrap_collection_seq"
     scrap_seller_name = fields.Char("Seller name", required=True)
-
+    payment_duration = fields.Date(
+        "Payment Deadline", default=fields.Datetime.now, readonly=True
+    )
     scrap_total_quantity = fields.Float(
         string="Quantity",
         digits=(10, 1),
@@ -63,7 +67,6 @@ class ScrapCollection(models.Model):
             return res
 
     def write(self, vals):
-        self.parameters_for_validation(vals)
         return super(ScrapCollection, self).write(vals)
 
     def unlink(self):
@@ -80,12 +83,6 @@ class ScrapCollection(models.Model):
     #         for name, value in values.items():
     #             record[name] = value
     #             print(record[name])
-    def parameters_for_validation(self, vals):
-        if "scrap_seller_name" in vals:
-            print("nothiingf")
-            para = self.env["ir.config_parameter"].get_param("min_name_length", "")
-            if len(vals["scrap_seller_name"]) < int(para):
-                raise ValidationError("Enter Proper name ")
 
     def add_inventory(self):
         total_quantity = 0
@@ -136,6 +133,14 @@ class ScrapCollection(models.Model):
     #         )
 
     #     self.collection_to_inventory_count = cat_name.current_scrap_quantity
+    def count_payment_days(self):
+        days_fo_payment = self.env["ir.config_parameter"].get_param(
+            "scrap_app.no_of_days_for_payment"
+        )
+        payment_due_date = self.scrap_collection_date + timedelta(
+            days=int(days_fo_payment)
+        )
+        self.payment_duration = payment_due_date
 
     def collection_to_inventory(self):
         mode_of_view = ""
@@ -147,7 +152,6 @@ class ScrapCollection(models.Model):
             id_res = value[0].id
         else:
             mode_of_view = "tree,form,kanban"
-            print("mode of view ", mode_of_view)
         return {
             "name": "Scrap Inventory",
             "res_model": "scrap.inventory",
@@ -158,16 +162,17 @@ class ScrapCollection(models.Model):
         }
 
     def make_payment_from_collection(self):
-        print("payment")
-        # self.scrap_collection_payment = "paid"
+
+        self.scrap_collection_payment = "not_paid"
 
     def cancel_collection(self):
         if self.scrap_collection_state == "in_process":
             self.scrap_collection_payment = "cancel"
             self.scrap_collection_state = "cancel"
         elif self.scrap_collection_state == "collected":
-            raise ValidationError("Record can't be deleted after collection!")
+            raise ValidationError(_("Record can't be deleted after collection!"))
 
     def Confirm_collection(self):
         if True:
             self.add_inventory()
+            self.count_payment_days()

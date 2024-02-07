@@ -1,8 +1,8 @@
-from odoo import fields, models, api
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
-class Scrap_items(models.Model):
+class ScrapItems(models.Model):
     _name = "scrap.items"
     _description = "showing the collected scrap"
     _rec_name = "scrap_item_category"
@@ -34,18 +34,16 @@ class Scrap_items(models.Model):
     def checking_quantity(self):
         value = self.scrap_item_quantity
         if value <= 0:
-            raise ValidationError("Do not enter value less or equal to 0")
+            raise ValidationError(_("Do not enter value less or equal to 0"))
 
     @api.model
     def create(self, vals):
-        res = super(Scrap_items, self).create(vals)
+        res = super(ScrapItems, self).create(vals)
         return res
 
     @api.model
     def write(self, vals):
-        print("vals", vals)
-        print("self", self)
-        return super(Scrap_items, self).write(vals)
+        return super(ScrapItems, self).write(vals)
 
     @api.onchange(
         "scrap_item_category",

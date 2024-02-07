@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
         <record id="action_scrap_collection_views" model="ir.actions.act_window">
    <field name="name">Scrap Collection items</field>
    <field name="type">ir.actions.act_window</field>
@@ -14,19 +13,18 @@
 </record>
 
 
-        <record id="action_scrap_items_tree" model="ir.ui.view">
+        <record id="action_ScrapItems_tree" model="ir.ui.view">
             <field name="name">scrap.items.tree</field>
             <field name="model">scrap.items</field>
             <field name="arch" type="xml">
                <tree>
-                   <field name="scrap_collection_id"/>
-                   <field name="scrap_selling_id"/>
-                   <field name="scrap_item_category"/>
-                   <field name="scrap_item_quantity"/>
-                   <field name="scrap_item_price"/>
-                   <field name="scrap_item_total_price"/>
+                   <field name="scrap_collection_id" />
+                   <field name="scrap_selling_id" />
+                   <field name="scrap_item_category" />
+                   <field name="scrap_item_quantity" />
+                   <field name="scrap_item_price" />
+                   <field name="scrap_item_total_price" />
                </tree>
             </field>
         </record>
-    </data>
 </odoo>

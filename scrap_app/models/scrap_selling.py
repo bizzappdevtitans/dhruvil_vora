@@ -1,5 +1,5 @@
-from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError, UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class Scrapselling(models.Model):
@@ -13,7 +13,9 @@ class Scrapselling(models.Model):
         digits=(10, 1),
     )
     scrap_total_price = fields.Float(string="Total price", digits=(15, 1))
-    selling_to_inventory_count = fields.Float(string="Inventory", readonly=True)
+    selling_to_inventory_count = fields.Float(
+        string="Inventory", readonly=True, compute="_compute_show_quantity"
+    )
     scrap_selling_seq = fields.Char(
         string="selling id",
         required=True,
@@ -32,9 +34,7 @@ class Scrapselling(models.Model):
         default="in_process",
         readonly=True,
     )
-    scrap_selling_date = fields.Date(
-        string="Collected Date", default=fields.Datetime.now
-    )
+    scrap_selling_date = fields.Date(string="Selling Date", default=fields.Datetime.now)
     scrap_address = fields.Char(string="Address", required=True)
 
     scrap_selling_payment = fields.Selection(
@@ -78,12 +78,26 @@ class Scrapselling(models.Model):
     #         for name, value in values.items():
     #             record[name] = value
     #             print(record[name])
+
+    # def _compute_show_quantity(self):
+    #     for res in self:
+    #         cat_name = self.env["scrap.inventory"].search(
+    #             [
+    #                 (
+    #                     "scrap_inventory_category",
+    #                     "=",
+    #                     res.scrap_category.scrap_category_name,
+    #                 )
+    #             ]
+    #         )
+
+    #     self.selling_to_inventory_count = cat_name.current_scrap_quantity
+
     def parameters_for_validation(self, vals):
         if "scrap_seller_name" in vals:
-            print("nothiingf")
             para = self.env["ir.config_parameter"].get_param("min_name_length", "")
             if len(vals["scrap_seller_name"]) < int(para):
-                raise ValidationError("Enter Proper name ")
+                raise ValidationError(_("Enter Proper name "))
 
     def add_inventory(self):
         total_quantity = 0
@@ -114,11 +128,10 @@ class Scrapselling(models.Model):
                         )
                     ]
                 )
-                if update_value.current_scrap_quantity < 0:
+                updating_qty = update_value.current_scrap_quantity
+                if updating_qty < category_total:
                     raise ValidationError(
-                        "You can't sell {} because it is only {} left".format(
-                            category_name, update_value.current_scrap_quantity
-                        )
+                        _("can't sell %(category_name)s. only %(updating_qty)s left")
                     )
                 else:
                     update_value.current_scrap_quantity -= category_quantity
@@ -127,50 +140,15 @@ class Scrapselling(models.Model):
         self.scrap_total_quantity = category_quantity
         self.scrap_total_price = category_total
 
-    # def _compute_show_quantity(self):
-    #     for res in self:
-    #         cat_name = self.env["scrap.inventory"].search(
-    #             [
-    #                 (
-    #                     "scrap_inventory_category",
-    #                     "=",
-    #                     res.scrap_category.scrap_category_name,
-    #                 )
-    #             ]
-    #         )
-
-    #     self.selling_to_inventory_count = cat_name.current_scrap_quantity
-
-    def selling_to_inventory(self):
-        mode_of_view = ""
-        id_res = 0
-        value = self.env["scrap.inventory"].search([("id", ">", 0)])
-        no_of_item = len(value)
-        if no_of_item == 1:
-            mode_of_view = "form"
-            id_res = value[0].id
-        else:
-            mode_of_view = "tree,form,kanban"
-            print("mode of view ", mode_of_view)
-        return {
-            "name": "Scrap Inventory",
-            "res_model": "scrap.inventory",
-            "view_id": False,
-            "view_mode": mode_of_view,
-            "res_id": id_res,
-            "type": "ir.actions.act_window",
-        }
-
     def make_payment_from_selling(self):
-        print("payment")
-        # self.scrap_selling_payment = "paid"
+        self.scrap_selling_payment = "not_paid"
 
     def cancel_selling(self):
         if self.scrap_selling_state == "in_process":
             self.scrap_selling_payment = "cancel"
             self.scrap_selling_state = "cancel"
         elif self.scrap_selling_state == "collected":
-            raise ValidationError("Record can't be deleted after selling!")
+            raise ValidationError(_("Record can't be deleted after selling!"))
 
     def Confirm_selling(self):
         if True:
@@ -199,7 +177,6 @@ class Scrapselling(models.Model):
         limit=100,
         name_get_uid=None,
     ):
-        print("was in this name_search ")
         args = args or []
 
         domain = []
@@ -216,18 +193,17 @@ class Scrapselling(models.Model):
         res = super(Scrapselling, self).read(vals)
         return res
 
-    def selling_to_inventory(self):
+    def sell_to_inventoryv(self):
         mode_of_view = ""
         id_res = 0
         value = self.env["scrap.inventory"].search_read([], ["id"])
-        print("value is this ", value)
+
         no_of_item = len(value)
         if no_of_item == 1:
             mode_of_view = "form"
             id_res = value[0].id
         else:
             mode_of_view = "tree,form,kanban"
-            print("mode of view ", mode_of_view)
         return {
             "name": "Scrap Inventory",
             "res_model": "scrap.inventory",

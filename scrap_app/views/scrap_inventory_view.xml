@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-<data>
-
 <record id="action_scrap_inventory" model="ir.actions.act_window">
    <field name="name">Scrap inventory</field>
    <field name="type">ir.actions.act_window</field>
@@ -15,7 +13,7 @@
 </record>
 
 
-    <record id="action_scrap_inventory_form" model="ir.ui.view" >
+    <record id="action_scrap_inventory_form" model="ir.ui.view">
     <field name="name">scrap.inventory.form</field>
     <field name="model">scrap.inventory</field>
     <field name="arch" type="xml">
@@ -26,7 +24,7 @@
                          <field name="scrap_inventory_category" />
                   </group>
                   <group>
-                      <field name="current_scrap_quantity"/>
+                      <field name="current_scrap_quantity" />
                   </group>
                 </group>
             </sheet>
@@ -41,19 +39,21 @@
             <field name="model">scrap.inventory</field>
 
             <field name="arch" type="xml">
-            <kanban class="ScrapInventory" string="Scrap Inventory" >
+            <kanban class="ScrapInventory" string="Scrap Inventory">
               <templates>
                   <t t-name="kanban-box">
                       <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                           <div class="o_kanban_content">
                               <strong>
-                                  <div class="oe_kanban_project_list o_kanban_record_subtitle">
-                                       <field name="scrap_inventory_category"/>
+                                  <div
+                                        class="oe_kanban_project_list o_kanban_record_subtitle"
+                                    >
+                                       <field name="scrap_inventory_category" />
                                   </div>
                               </strong>
                                <div>
                                   Qty :
-                                  <field name="current_scrap_quantity"/>
+                                  <field name="current_scrap_quantity" />
                               </div>
 
                           </div>
@@ -70,11 +70,9 @@
    <field name="model">scrap.inventory</field>
    <field name="arch" type="xml">
        <tree>
-         <field name="scrap_inventory_category"/>
-         <field name="current_scrap_quantity" sum="current_scrap_quantity"/>
+         <field name="scrap_inventory_category" />
+         <field name="current_scrap_quantity" sum="current_scrap_quantity" />
        </tree>
    </field>
 </record>
-</data>
-
 </odoo>

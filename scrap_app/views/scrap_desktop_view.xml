@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-<data>
-
 <record id="action_scrap_desktop" model="ir.actions.act_window">
    <field name="name">Desktop</field>
    <field name="type">ir.actions.act_window</field>
@@ -19,14 +17,14 @@
             <field name="name">scrap.desktop.kanban</field>
             <field name="arch" type="xml">
                 <kanban class="o_res_partner_kanban">
-                    <field name="desktop_value_name"/>
+                    <field name="desktop_value_name" />
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_global_click">
                                 <div class="o_kanban_image">
                                  <field name="desktop_value_image" widget="image" />
                                 </div>
-                                    <field name="desktop_value_name"/>
+                                    <field name="desktop_value_name" />
                             </div>
                         </t>
                     </templates>
@@ -43,8 +41,8 @@
             <sheet>
                 <group>
                     <group>
-                        <field name="desktop_value_name"/>
-                        <field name="desktop_value_image"/>
+                        <field name="desktop_value_name" />
+                        <field name="desktop_value_image" />
                     </group>
 
                 </group>
@@ -58,11 +56,9 @@
    <field name="model">scrap.desktop</field>
    <field name="arch" type="xml">
        <tree>
-           <field name="desktop_value_name"/>
-           <field name="desktop_value_image"/>
+           <field name="desktop_value_name" />
+           <field name="desktop_value_image" />
        </tree>
    </field>
 </record>
-</data>
-
 </odoo>

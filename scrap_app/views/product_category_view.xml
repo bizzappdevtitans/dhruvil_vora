@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-<data>
-
 <record id="scrapapp_action_product_category" model="ir.actions.act_window">
    <field name="name">product Category</field>
    <field name="type">ir.actions.act_window</field>
@@ -23,8 +21,8 @@
             <sheet>
                 <group>
                     <group>
-                        <field name="scrapapp_product_category_name"/>
-                        <field name="scrapapp_product_category_image"/>
+                        <field name="scrapapp_product_category_name" />
+                        <field name="scrapapp_product_category_image" />
                     </group>
 
                 </group>
@@ -38,10 +36,8 @@
    <field name="model">scrapapp_product.category</field>
    <field name="arch" type="xml">
        <tree>
-        <field name="scrapapp_product_category_name"/>
+        <field name="scrapapp_product_category_name" />
        </tree>
    </field>
 </record>
-</data>
-
 </odoo>

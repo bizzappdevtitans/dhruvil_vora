@@ -5,10 +5,7 @@
     "category": "Uncategorized",
     "version": "15.0.1.0.0",
     "summary": "Management of scrap",
-    "description": """
-This module gives you a quick view of your scrap collection and management.
-""",
-    "author": "bizzappdev.com",
+    "author": "Odoo Community Association (OCA)",
     "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",
@@ -20,6 +17,7 @@ This module gives you a quick view of your scrap collection and management.
         "views/product_category_view.xml",
         "views/product_product_view.xml",
         "views/scrap_items_views.xml",
+        "views/res_config_settings_views.xml",
         "views/scrapapp_menu.xml",
     ],
     "demo": [
@@ -29,5 +27,5 @@ This module gives you a quick view of your scrap collection and management.
     ],
     "application": True,
     "license": "LGPL-3",
-    # "website": "https://www.bizzappdev.com/",
+    "website": "https://github.com/OCAoca/",
 }
