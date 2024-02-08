@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<!-- student code started -->
+<record id="action_school_teacher_task" model="ir.actions.act_window">
+   <field name="name">Teacher Task</field>
+   <field name="type">ir.actions.act_window</field>
+   <field name="res_model">teacher.task</field>
+   <field name="view_mode">tree,form</field>
+   <field name="help" type="html">
+       <p class="o_view_nocontent_smiling_face">
+           Add a new Task of Teacher
+       </p>
+   </field>
+</record>
+  <!-- Search for the teacher task  -->
+  <!-- <record id="view_search_book" model="ir.ui.view">
+        <field name="name">Teacher filter</field>
+        <field name="model">teacher.task</field>
+        <field name="arch" type="xml">
+        <search>
+            <field name="student_name"/>
+            <filter name="student_name" string="student_name" domain="[('student_name','=','')]"/>
+        </search>
+        </field>
+</record> -->
+
+    <record id="teacher_task_form" model="ir.ui.view">
+    <field name="name">Teacher_task_form</field>
+    <field name="model">teacher.task</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <group>
+                        <field name="task_teacher_name"/>
+                        <field name="task_teacher_course"/>
+                        <field name="description_of_task"/>
+                    </group>
+
+                </group>
+            </sheet>
+        </form>
+    </field>
+ </record>
+
+ <record id="teacher_task_tree" model="ir.ui.view">
+   <field name="name">Teacher_task_tree</field>
+   <field name="model">teacher.task</field>
+   <field name="arch" type="xml">
+       <tree>
+      <field name="task_teacher_name"/>
+        <field name="task_teacher_course"/>
+        <field name="description_of_task"/>
+       </tree>
+   </field>
+</record>
+
+
+
+</data>
+
+</odoo>
+
+
